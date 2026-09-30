@@ -1,17 +1,10 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-
-  html {
-    color-scheme: dark;
-  }
+  --bg: #05070b;
+  --fg: #e8ecf4;
+  --muted: #8a93a6;
+  --blue: #2e5bff;
+  --blue-soft: #5b8aff;
+  color-scheme: dark;
 }
 
 * {
@@ -20,25 +13,273 @@
   margin: 0;
 }
 
+html,
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+}
+
+body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.landing {
+::selection {
+  background: var(--blue);
+  color: #fff;
+}
+
+.page {
+  --mx: 50vw;
+  --my: 50vh;
+  position: relative;
   min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* ---------- background layers ---------- */
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center center;
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 20%, transparent 75%);
+  animation: fade-in 2.4s ease-out both;
+}
+
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(900px, 140vw);
+  aspect-ratio: 2 / 1;
+  translate: -50% -50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(46, 91, 255, 0.28),
+    rgba(46, 91, 255, 0.06) 45%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  animation:
+    fade-in 3s ease-out both,
+    breathe 9s ease-in-out 3s infinite;
+}
+
+.spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgba(91, 138, 255, 0.08),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.07;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  z-index: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 16px;
+  padding: 0 16px;
   text-align: center;
 }
 
-.landing h1 {
-  font-size: clamp(2rem, 6vw, 4rem);
+.sub,
+.corner {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+h1 {
+  font-size: clamp(3rem, 12vw, 9.5rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  background: linear-gradient(180deg, #ffffff 0%, #c9d2e6 55%, #6f7a93 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.35s both;
+}
+
+.line {
+  position: relative;
+  width: min(560px, 78vw);
+  height: 2px;
+  margin: 40px 0 28px;
+}
+
+.line span {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(46, 91, 255, 0.4) 15%,
+    var(--blue-soft) 50%,
+    var(--blue) 85%,
+    transparent
+  );
+  box-shadow:
+    0 0 12px rgba(91, 138, 255, 0.8),
+    0 0 40px rgba(46, 91, 255, 0.5);
+  transform-origin: left center;
+  animation: draw 1.6s cubic-bezier(0.7, 0, 0.2, 1) 0.9s both;
+}
+
+/* a spark that runs along the line every so often */
+.line::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 90px;
+  height: 6px;
+  translate: -100% -50%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, #fff, rgba(91, 138, 255, 0.6) 40%, transparent 70%);
+  filter: blur(1px);
+  opacity: 0;
+  animation: spark 6s ease-in-out 3s infinite;
+}
+
+.sub {
+  color: #aeb7c9;
+  letter-spacing: 0.6em;
+  margin-right: -0.6em; /* optically re-center tracked text */
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 1.8s both;
+}
+
+/* ---------- corners ---------- */
+
+.corner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  animation: fade-in 1.5s ease-out 2.2s both;
+}
+
+.corner.top {
+  top: 0;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.corner.bottom {
+  bottom: 0;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3ddc97;
+  box-shadow: 0 0 10px #3ddc97;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@media (max-width: 560px) {
+  .corner {
+    padding: 20px 16px;
+  }
+  .coords {
+    display: none;
+  }
+  .sub {
+    letter-spacing: 0.4em;
+    margin-right: -0.4em;
+  }
+}
+
+/* ---------- motion ---------- */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@keyframes draw {
+  from { transform: scaleX(0); opacity: 0; }
+  20% { opacity: 1; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes spark {
+  0% { left: 0; opacity: 0; }
+  8% { opacity: 1; }
+  30% { left: calc(100% + 90px); opacity: 0; }
+  100% { left: calc(100% + 90px); opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 1; scale: 1; }
+  50% { opacity: 0.7; scale: 1.08; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .line::after {
+    display: none;
+  }
 }
