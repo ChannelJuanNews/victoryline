@@ -178,6 +178,200 @@ h1 {
   animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 1.8s both;
 }
 
+/* ---------- launch ---------- */
+
+.launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 56px;
+  padding: 10px 14px 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  color: var(--fg);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s;
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 2.2s both;
+}
+
+.launch:hover,
+.launch:focus-visible {
+  border-color: rgba(91, 138, 255, 0.5);
+  background: rgba(46, 91, 255, 0.08);
+  outline: none;
+}
+
+.tag {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--blue-soft);
+}
+
+.launch .tag {
+  padding-right: 14px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.name em {
+  font-style: normal;
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+.arrow {
+  color: var(--muted);
+  transition: transform 0.3s, color 0.3s;
+}
+
+.launch:hover .arrow {
+  transform: translateX(3px);
+  color: var(--fg);
+}
+
+/* ---------- modal ---------- */
+
+.modal {
+  margin: auto;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100svh - 32px);
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: #0a0d14;
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(46, 91, 255, 0.08);
+}
+
+.modal[open] {
+  animation: pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.modal::backdrop {
+  background: rgba(3, 4, 7, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.panel {
+  position: relative;
+  padding: 28px;
+}
+
+.panel h2 {
+  margin: 8px 0 22px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.panel .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.panel input,
+.panel textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--fg);
+  font: inherit;
+  font-size: 16px; /* no zoom on iOS */
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.panel input:focus,
+.panel textarea:focus {
+  border-color: rgba(91, 138, 255, 0.6);
+  outline: none;
+}
+
+.panel .hp {
+  position: absolute;
+  left: -9999px;
+}
+
+.submit {
+  margin-top: 6px;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--fg);
+  color: var(--bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.submit:hover {
+  opacity: 0.88;
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--fg);
+}
+
+.error {
+  font-size: 13px;
+  color: #ff7a7a;
+}
+
+.done {
+  padding: 12px 0 4px;
+}
+
+.done h2 {
+  margin-bottom: 8px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
 /* ---------- corners ---------- */
 
 .corner {
@@ -225,6 +419,37 @@ h1 {
     letter-spacing: 0.4em;
     margin-right: -0.4em;
   }
+  .launch {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 44px;
+    padding: 14px 28px;
+    border-radius: 16px;
+  }
+  .launch .tag {
+    padding: 0;
+    border: 0;
+  }
+  .name em {
+    display: block;
+    margin: 2px 0 0;
+    font-size: 13px;
+  }
+  .launch .arrow {
+    display: none;
+  }
+  .panel {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-height: 560px) {
+  .line {
+    margin: 24px 0 18px;
+  }
+  .launch {
+    margin-top: 28px;
+  }
 }
 
 /* ---------- motion ---------- */
@@ -255,6 +480,11 @@ h1 {
 @keyframes breathe {
   0%, 100% { opacity: 1; scale: 1; }
   50% { opacity: 0.7; scale: 1.08; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes pulse {
