@@ -1,9 +1,7 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({ variable: "--font-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-mono", subsets: ["latin"] });
+import { fontVars } from "@/lib/fonts";
 
 const SITE_URL = "https://victorylinesoftware.com";
 const TITLE = "Victoryline Software LLC";
@@ -86,10 +84,7 @@ export default function Home() {
         <meta name="twitter:description" content={DESCRIPTION} />
         <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
       </Head>
-      <div
-        ref={pageRef}
-        className={`page ${geistSans.variable} ${geistMono.variable}`}
-      >
+      <div ref={pageRef} className={`page ${fontVars}`}>
         <div className="grid" aria-hidden />
         <div className="glow" aria-hidden />
         <div className="spotlight" aria-hidden />
@@ -98,6 +93,9 @@ export default function Home() {
         <header className="corner top">
           <span className="dot" aria-hidden />
           <span>Building quietly</span>
+          <Link href="/login" className="signin">
+            Log in
+          </Link>
         </header>
 
         <main className="hero">
